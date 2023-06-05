@@ -31,28 +31,28 @@ class Library:
    
       icono1 = Image.open("assets/icono1.jpeg")
       width, height = 64, 64
-      icono1 = icono1.resize((width, height), Image.ANTIALIAS)
+      icono1 = icono1.resize((width, height))
       icono1TK = ImageTk.PhotoImage(icono1)
 
       icono2 = Image.open("assets/icono2.png")
       width, height = 64, 64
-      icono2 = icono2.resize((width, height), Image.ANTIALIAS)
+      icono2 = icono2.resize((width, height))
       icono2TK = ImageTk.PhotoImage(icono2)
 
       icono3 = Image.open("assets/icono3.png")
       width, height = 64, 64
-      icono3 = icono3.resize((width, height), Image.ANTIALIAS)
+      icono3 = icono3.resize((width, height))
       icono3TK = ImageTk.PhotoImage(icono3)
 
       icono4 = Image.open("assets/icono4.jpeg")
       width, height = 64, 64
-      icono4 = icono4.resize((width, height), Image.ANTIALIAS)
+      icono4 = icono4.resize((width, height))
       icono4TK = ImageTk.PhotoImage(icono4)
 
 
       icono5 = Image.open("assets/icono5.jpg")
       width, height = 64, 64
-      icono5 = icono5.resize((width, height), Image.ANTIALIAS)
+      icono5 = icono5.resize((width, height))
       icono5TK = ImageTk.PhotoImage(icono5)
 
 
@@ -141,55 +141,55 @@ class Library:
    
       def saveText():
          with open('text/texto_guardado1.txt', 'w') as file:
-         file.write(metadataEditable.get("1.0", tkinter.END))
-         ventana_secundaria.destroy()
-         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
+            file.write(metadataEditable.get("1.0", tkinter.END))
+            ventana_secundaria.destroy()
+            ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
 
    def openPDF1(self):
-   ventana_secundaria = tkinter.Toplevel()
-   ventana_secundaria.title("Book to be read")
-   ventana_secundaria.config(width=300, height=300)
-   notebook = ttk.Notebook(ventana_secundaria)
-   notebook.pack(fill=tkinter.BOTH, expand=True)
-   
-   pdf_frame = tkinter.Frame(notebook)
-   pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-   pdf = open('books/OrgulloYPrejuicio.pdf', 'rb')
-   reader = PyPDF2.PdfReader(pdf)
-   
-   text_widget = tkinter.Text(pdf_frame)
-   text_widget.pack(fill=tkinter.BOTH, expand=True)
-   
-   for page in range(len(reader.pages)):
-         infoPage = reader._get_page(page)
-         extractInfo = infoPage.extract_text()
-         numPage = "Page: ", page + 1
+      ventana_secundaria = tkinter.Toplevel()
+      ventana_secundaria.title("Book to be read")
+      ventana_secundaria.config(width=300, height=300)
+      notebook = ttk.Notebook(ventana_secundaria)
+      notebook.pack(fill=tkinter.BOTH, expand=True)
       
-         text_widget.insert(tkinter.END, f"----\n{extractInfo}\n{numPage}\n*********\n\n")
-   
-   notebook.add(pdf_frame, text="Book to be read")
-   
-   metadataFrame = tkinter.Frame(notebook)
-   notebook.add(metadataFrame, text="Book metadata")
+      pdf_frame = tkinter.Frame(notebook)
+      pdf_frame.pack(fill=tkinter.BOTH, expand=True)
+      pdf = open('books/OrgulloYPrejuicio.pdf', 'rb')
+      reader = PyPDF2.PdfReader(pdf)
+      
+      text_widget = tkinter.Text(pdf_frame)
+      text_widget.pack(fill=tkinter.BOTH, expand=True)
+      
+      for page in range(len(reader.pages)):
+            infoPage = reader._get_page(page)
+            extractInfo = infoPage.extract_text()
+            numPage = "Page: ", page + 1
+         
+            text_widget.insert(tkinter.END, f"----\n{extractInfo}\n{numPage}\n*********\n\n")
+      
+      notebook.add(pdf_frame, text="Book to be read")
+      
+      metadataFrame = tkinter.Frame(notebook)
+      notebook.add(metadataFrame, text="Book metadata")
 
-   metadataEditable = tkinter.Text(metadataFrame)
-   metadataEditable.pack(fill=tkinter.BOTH, expand=True)
+      metadataEditable = tkinter.Text(metadataFrame)
+      metadataEditable.pack(fill=tkinter.BOTH, expand=True)
 
-   initialText = "Book metadata: \nTitle: Orgullo y Prejuicio \nAuthor: Jane Austen \nISBN Code: 9781238709626 \nGenre: Romance \n\nSummary: En un pequeño pueblo inglés, la señora Bennet, una madre ansiosa por casar a sus cinco hijas, \nrecibe la noticia de que un hombre rico, el señor Bingley, ha llegado a la vecindad. \nLa familia Bennet asiste a un baile en la mansión Netherfield, donde la señorita Bennet, \nJane, y el señor Bingley parecen enamorarse. Sin embargo, la señorita Bennet más orgullosa y cautelosa, Elizabeth, se encuentra con el amigo del \nseñor Bingley, el señor Darcy, quien la encuentra poco atractiva y, a su vez, Elizabeth lo considera arrogante.  "
-   metadataEditable.insert(tkinter.END, initialText)
-   try:
-      with open('text/texto_guardado1.txt', 'r') as file:
-         savedText = file.read()
-         metadataEditable.delete("1.0", tkinter.END)
-         metadataEditable.insert(tkinter.END, savedText)
-   except FileNotFoundError:
-      pass
+      initialText = "Book metadata: \nTitle: Orgullo y Prejuicio \nAuthor: Jane Austen \nISBN Code: 9781238709626 \nGenre: Romance \n\nSummary: En un pequeño pueblo inglés, la señora Bennet, una madre ansiosa por casar a sus cinco hijas, \nrecibe la noticia de que un hombre rico, el señor Bingley, ha llegado a la vecindad. \nLa familia Bennet asiste a un baile en la mansión Netherfield, donde la señorita Bennet, \nJane, y el señor Bingley parecen enamorarse. Sin embargo, la señorita Bennet más orgullosa y cautelosa, Elizabeth, se encuentra con el amigo del \nseñor Bingley, el señor Darcy, quien la encuentra poco atractiva y, a su vez, Elizabeth lo considera arrogante.  "
+      metadataEditable.insert(tkinter.END, initialText)
+      try:
+         with open('text/texto_guardado1.txt', 'r') as file:
+            savedText = file.read()
+            metadataEditable.delete("1.0", tkinter.END)
+            metadataEditable.insert(tkinter.END, savedText)
+      except FileNotFoundError:
+         pass
    
    def saveText():
       with open('text/texto_guardado1.txt', 'w') as file:
          file.write(metadataEditable.get("1.0", tkinter.END))
          ventana_secundaria.destroy()
-   ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
+         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
          
          
 
