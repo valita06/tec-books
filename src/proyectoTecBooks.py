@@ -7,12 +7,13 @@ from tkinter import filedialog
 
 
 class Book:
-   def __init__(self, title, author, year, genre, description, filename):
+   def __init__(self, title, author, genre, description, pages, code, filename):
       self.title = title
       self.author = author
-      self.year = year
       self.genre = genre
       self.description = description
+      self.pages = pages
+      self.code = code
       self.filename = filename
 
 
@@ -25,6 +26,7 @@ class Library:
       nb = ttk.Notebook(self.root)
       #self.root.iconbitmap(r'C:\Users\valer\Downloads\icon_library.ico')
       self.books = []
+      self.current_book = ""
       nb.pack(fill='both', expand='yes',)
       self.pl = tkinter.Frame(nb, background='#F4EEE1')
       self.p2 = tkinter.Frame(nb, background= '#E0D5CC')
@@ -91,59 +93,59 @@ class Library:
       self.botonConsult=ttk.Button(self.p2, compound="top", text="Consult books", command=self.searchBook)
       self.botonConsult.place(relx=0.4621, rely=0.343)
 
-      def create_buttons(self):
-         for i, book in enumerate(self.books):
-            button = ttk.Button(self.root, compound="top", text=book.title, command=lambda book=book: self.openPDFX(self, book))
-            button.place(relx=0.7, rely=0.25 + i * 0.1)
-
       self.root.mainloop()
+   
+   
+   def create_book_buttons(self):
+      for i, book in enumerate(self.books):
+         button = ttk.Button(self.root, compound="top", text=book.title, command=lambda book=book: self.openPDFX(book))
+         button.place(relx=0.7, rely=0.25 + i * 0.100)
 
-   def openPDFX(self):
-      for book in self.books:
-         ventana_secundaria = tkinter.Toplevel()
-         ventana_secundaria.title("Book to be read")
-         ventana_secundaria.config(width=300, height=300)
-         notebook = ttk.Notebook(ventana_secundaria)
-         notebook.pack(fill=tkinter.BOTH, expand=True)
-   
-         pdf_frame = tkinter.Frame(notebook)
-         pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-         pdf = open(book.filename, 'rb')
-         reader = PyPDF2.PdfReader(pdf)
-   
-         text_widget = tkinter.Text(pdf_frame)
-         text_widget.pack(fill=tkinter.BOTH, expand=True)
-   
-         for page in range(len(reader.pages)):
-            infoPage = reader._get_page(page)
-            extractInfo = infoPage.extract_text()
-            numPage = "Page: ", page + 1
-      
-            text_widget.insert(tkinter.END, f"----\n{extractInfo}\n{numPage}\n*********\n\n")
-   
-         notebook.add(pdf_frame, text="Book to be read")
-   
-         metadataFrame = tkinter.Frame(notebook)
-         notebook.add(metadataFrame, text="Book metadata")
+   def openPDFX(self, book):
+      ventana_secundaria = tkinter.Toplevel()
+      ventana_secundaria.title("Book to be read")
+      ventana_secundaria.config(width=300, height=300)
+      notebook = ttk.Notebook(ventana_secundaria)
+      notebook.pack(fill=tkinter.BOTH, expand=True)
 
-         metadataEditable = tkinter.Text(metadataFrame)
-         metadataEditable.pack(fill=tkinter.BOTH, expand=True)
+      pdf_frame = tkinter.Frame(notebook)
+      pdf_frame.pack(fill=tkinter.BOTH, expand=True)
+      pdf = open(book.filename, 'rb')
+      reader = PyPDF2.PdfReader(pdf)
 
-         initialText = "Book metadata: \nTitle: {book.title} \nAuthor: {book.author} \nISBN Code: {book.code} \nGenre: {book.genre} \n\nSummary: {book.description}"
-         metadataEditable.insert(tkinter.END, initialText)
-         try:
-            with open('text/texto_guardado1.txt', 'r') as file:
-               savedText = file.read()
-               metadataEditable.delete("1.0", tkinter.END)
-               metadataEditable.insert(tkinter.END, savedText)
-         except FileNotFoundError:
-            pass
+      text_widget = tkinter.Text(pdf_frame)
+      text_widget.pack(fill=tkinter.BOTH, expand=True)
+
+      for page in range(len(reader.pages)):
+         infoPage = reader._get_page(page)
+         extractInfo = infoPage.extract_text()
+         numPage = "Page: ", page + 1
    
-      def saveText():
-         with open('text/texto_guardado1.txt', 'w') as file:
-            file.write(metadataEditable.get("1.0", tkinter.END))
-            ventana_secundaria.destroy()
-            ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
+         text_widget.insert(tkinter.END, f"----\n{extractInfo}\n{numPage}\n*********\n\n")
+
+      notebook.add(pdf_frame, text="Book to be read")
+
+      metadataFrame = tkinter.Frame(notebook)
+      notebook.add(metadataFrame, text="Book metadata")
+
+      metadataEditable = tkinter.Text(metadataFrame)
+      metadataEditable.pack(fill=tkinter.BOTH, expand=True)
+
+      initialText = "Book metadata: \nTitle: {book.title} \nAuthor: {book.author} \nISBN Code: {book.code} \nGenre: {book.genre} \n\nSummary: {book.description}"
+      metadataEditable.insert(tkinter.END, initialText)
+      try:
+         with open('text/texto_guardado1.txt', 'r') as file:
+            savedText = file.read()
+            metadataEditable.delete("1.0", tkinter.END)
+            metadataEditable.insert(tkinter.END, savedText)
+      except FileNotFoundError:
+         pass
+
+   def saveText():
+      with open('text/texto_guardado1.txt', 'w') as file:
+         file.write(metadataEditable.get("1.0", tkinter.END))
+         ventana_secundaria.destroy()
+         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
 
    def openPDF1(self):
       ventana_secundaria = tkinter.Toplevel()
@@ -412,13 +414,11 @@ class Library:
       selected_book_label.place(relx=0.5, rely=0.75, anchor="center")
       
       # change selected book label contents
-      selected_book_label.configure(text="Selected book: "+titleEntry.get())
+      selected_book_label.configure(text="Selected book: " + titleEntry.get())
       
       # Function for opening the
       # file explorer window
-      filename = ""
       def browseFiles():
-         global filename
          filename = filedialog.askopenfilename(initialdir = "/",
                                                 title = "Select a File",
                                                 filetypes = (("PDF files",
@@ -427,30 +427,40 @@ class Library:
                                                             "*.*")))
          print("Selected file: ", filename)
          updateSelectedBook()
+         self.current_book = filename
+      
 
       def updateSelectedBook():
-            selected_book_label.configure(text="File Opened: " + filename)
+            selected_book_label.configure(text="File Opened: " + self.current_book)
 
       # BUTTON TO OPEN THE FILE EXPLORER
       button_explore = Button(ventana_secundaria, text = "Browse Files", command = browseFiles)
       button_explore.place(relx=0.5, rely=0.8, anchor="center")
 
       
-      
-
       def saveBook():
+         global book
          title = titleEntry.get()
          author = authorEntry.get()
          genre = genreEntry.get()
          description = descriptionEntry.get()
          pages = int(pagesEntry.get())
          code = int(codeEntry.get())
-         filename = filename.get()
+         filename = self.current_book
          print(title, author, genre, description, pages, code)
-         global book
+         
          book = Book(title, author, genre, description, pages, code, filename)
          self.books.append(book)
+         print(self.books)
+         self.create_book_buttons()
+         ventana_secundaria.destroy()
+         
 
+
+      # save book button
+      button_save = Button(ventana_secundaria, text = "Save Book", command = saveBook)
+      button_save.place(relx=0.5, rely=0.9, anchor="center")
+      
    def deleteBook(self):
       ventana_secundaria = tkinter.Toplevel()
       ventana_secundaria.title("Delete a Book")
