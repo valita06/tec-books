@@ -7,12 +7,13 @@ from tkinter import filedialog
 
 
 class Book:
-   def __init__(self, title, author, year, genre, description):
+   def __init__(self, title, author, year, genre, description, filename):
       self.title = title
       self.author = author
       self.year = year
       self.genre = genre
       self.description = description
+      self.filename = filename
 
 
 
@@ -57,8 +58,6 @@ class Library:
 
        nb.add(self.pl, text='Homepage')
        nb.add(self.p2, text='Menu')
-
-       modifyBook = StringVar()
       
        self.Label1 = ttk.Label(self.pl, text= 'Welcome to TecBooks Bookstore!', font= ('Times New Roman', 20), anchor= 'center', background='#F4EEE1')
        self.Label1.pack(pady=20)
@@ -91,11 +90,61 @@ class Library:
        self.botonDelete.place(relx=0.465, rely=0.3)
        self.botonConsult=ttk.Button(self.p2, compound="top", text="Consult books", command=self.searchBook)
        self.botonConsult.place(relx=0.4621, rely=0.343)
-      
+
+       def create_buttons(self):
+          for i, book in enumerate(self.books):
+             button = ttk.Button(self.root, compound="top", text=book.title, command=lambda book=book: self.openPDFX(self, book))
+             button.place(relx=0.7, rely=0.25 + i * 0.1)
 
        self.root.mainloop()
 
+    def openPDFX(self):
+        for book in self.books:
+          ventana_secundaria = tkinter.Toplevel()
+          ventana_secundaria.title("Book to be read")
+          ventana_secundaria.config(width=300, height=300)
+          notebook = ttk.Notebook(ventana_secundaria)
+          notebook.pack(fill=tkinter.BOTH, expand=True)
+    
+          pdf_frame = tkinter.Frame(notebook)
+          pdf_frame.pack(fill=tkinter.BOTH, expand=True)
+          pdf = open(book.filename, 'rb')
+          reader = PyPDF2.PdfReader(pdf)
+    
+          text_widget = tkinter.Text(pdf_frame)
+          text_widget.pack(fill=tkinter.BOTH, expand=True)
+    
+          for page in range(len(reader.pages)):
+              infoPage = reader._get_page(page)
+              extractInfo = infoPage.extract_text()
+              numPage = "Page: ", page + 1
+        
+              text_widget.insert(tkinter.END, f"----\n{extractInfo}\n{numPage}\n*********\n\n")
+      
+          notebook.add(pdf_frame, text="Book to be read")
+    
+          metadataFrame = tkinter.Frame(notebook)
+          notebook.add(metadataFrame, text="Book metadata")
+
+          metadataEditable = tkinter.Text(metadataFrame)
+          metadataEditable.pack(fill=tkinter.BOTH, expand=True)
   
+          initialText = "Book metadata: \nTitle: {book.title} \nAuthor: {book.author} \nISBN Code: {book.code} \nGenre: {book.genre} \n\nSummary: {book.description}"
+          metadataEditable.insert(tkinter.END, initialText)
+          try:
+             with open('text/texto_guardado1.txt', 'r') as file:
+                savedText = file.read()
+                metadataEditable.delete("1.0", tkinter.END)
+                metadataEditable.insert(tkinter.END, savedText)
+          except FileNotFoundError:
+             pass
+      
+        def saveText():
+           with open('text/texto_guardado1.txt', 'w') as file:
+            file.write(metadataEditable.get("1.0", tkinter.END))
+            ventana_secundaria.destroy()
+            ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
+
     def openPDF1(self):
       ventana_secundaria = tkinter.Toplevel()
       ventana_secundaria.title("Book to be read")
@@ -330,7 +379,11 @@ class Library:
          ventana_secundaria = tkinter.Toplevel()
          ventana_secundaria.title("Add a Book")
          ventana_secundaria.geometry('500x400')
-    
+
+         code = ttk.Label(ventana_secundaria, text="Book's code?")
+         code.place(relx=0.5, rely=0.1, anchor="center")
+         codeEntry = ttk.Entry(ventana_secundaria, width=20)
+         codeEntry.place(relx=0.5, rely=0.15, anchor="center")
          title = ttk.Label(ventana_secundaria, text="Book's name?")
          title.place(relx=0.5, rely=0.2, anchor="center")
          titleEntry = ttk.Entry(ventana_secundaria, width=20)
@@ -345,14 +398,15 @@ class Library:
          genre2.place(relx=0.5, rely=0.45, anchor="center")
          genreEntry = ttk.Entry(ventana_secundaria, width=20)
          genreEntry.place(relx=0.5, rely=0.5, anchor="center")
-         summary = ttk.Label(ventana_secundaria, text="Enter the book's summary in the desired language")
-         summary.place(relx=0.5, rely=0.55, anchor="center")
-         summaryEntry = ttk.Entry(ventana_secundaria, width=20)
-         summaryEntry.place(relx=0.5, rely=0.6, anchor="center")
+         description = ttk.Label(ventana_secundaria, text="Enter the book's description in the desired language")
+         description.place(relx=0.5, rely=0.55, anchor="center")
+         descriptionEntry = ttk.Entry(ventana_secundaria, width=20)
+         descriptionEntry.place(relx=0.5, rely=0.6, anchor="center")
          numPages = ttk.Label(ventana_secundaria, text="Number of pages")
          numPages.place(relx=0.5, rely=0.65, anchor="center")
          pagesEntry = ttk.Entry(ventana_secundaria, width=20)
          pagesEntry.place(relx=0.5, rely=0.7, anchor="center")
+         
 
          selected_book_label = ttk.Label(ventana_secundaria, text="Selected book: ")
          selected_book_label.place(relx=0.5, rely=0.75, anchor="center")
@@ -371,23 +425,30 @@ class Library:
                                                                "*.pdf"),
                                                                ("all files",
                                                                "*.*")))
+            print("Selected file: ", filename)
+            updateSelectedBook()
+
+         def updateSelectedBook():
+             selected_book_label.configure(text="File Opened: " + filename)
 
          # BUTTON TO OPEN THE FILE EXPLORER
          button_explore = Button(ventana_secundaria, text = "Browse Files", command = browseFiles)
          button_explore.place(relx=0.5, rely=0.8, anchor="center")
 
-         print(filename)
-         # Change label contents
-         selected_book_label.configure(text="File Opened: " + filename)
+         
          
 
          def saveBook():
             title = titleEntry.get()
             author = authorEntry.get()
             genre = genreEntry.get()
-            summary = summaryEntry.get()
-            pages = pagesEntry.get()
-            book = Book(title, author, genre, summary, pages)
+            description = descriptionEntry.get()
+            pages = int(pagesEntry.get())
+            code = int(codeEntry.get())
+            filename = filename.get()
+            print(title, author, genre, description, pages, code)
+            global book
+            book = Book(title, author, genre, description, pages, code, filename)
             self.books.append(book)
 
     def deleteBook(self):
