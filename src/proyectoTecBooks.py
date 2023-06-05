@@ -22,34 +22,34 @@ class Library:
        self.root.title("Librería TEC Books")
        self.root.geometry('1100x1000')
        nb = ttk.Notebook(self.root)
-       self.root.iconbitmap(r'C:\Users\valer\Downloads\icon_library.ico')
+       #self.root.iconbitmap(r'C:\Users\valer\Downloads\icon_library.ico')
        self.books = []
        nb.pack(fill='both', expand='yes',)
        self.pl = tkinter.Frame(nb, background='#F4EEE1')
        self.p2 = tkinter.Frame(nb, background= '#E0D5CC')
      
-       icono1 = Image.open("icono1.jpeg")
+       icono1 = Image.open("assets/icono1.jpeg")
        width, height = 64, 64
        icono1 = icono1.resize((width, height), Image.ANTIALIAS)
        icono1TK = ImageTk.PhotoImage(icono1)
 
-       icono2 = Image.open("icono2.png")
+       icono2 = Image.open("assets/icono2.png")
        width, height = 64, 64
        icono2 = icono2.resize((width, height), Image.ANTIALIAS)
        icono2TK = ImageTk.PhotoImage(icono2)
 
-       icono3 = Image.open("icono3.png")
+       icono3 = Image.open("assets/icono3.png")
        width, height = 64, 64
        icono3 = icono3.resize((width, height), Image.ANTIALIAS)
        icono3TK = ImageTk.PhotoImage(icono3)
 
-       icono4 = Image.open("icono4.jpeg")
+       icono4 = Image.open("assets/icono4.jpeg")
        width, height = 64, 64
        icono4 = icono4.resize((width, height), Image.ANTIALIAS)
        icono4TK = ImageTk.PhotoImage(icono4)
 
 
-       icono5 = Image.open("icono5.jpg")
+       icono5 = Image.open("assets/icono5.jpg")
        width, height = 64, 64
        icono5 = icono5.resize((width, height), Image.ANTIALIAS)
        icono5TK = ImageTk.PhotoImage(icono5)
@@ -105,7 +105,7 @@ class Library:
     
       pdf_frame = tkinter.Frame(notebook)
       pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-      pdf = open('OrgulloYPrejuicio.pdf', 'rb')
+      pdf = open('books/OrgulloYPrejuicio.pdf', 'rb')
       reader = PyPDF2.PdfReader(pdf)
     
       text_widget = tkinter.Text(pdf_frame)
@@ -129,7 +129,7 @@ class Library:
       initialText = "Book metadata: \nTitle: Orgullo y Prejuicio \nAuthor: Jane Austen \nISBN Code: 9781238709626 \nGenre: Romance \n\nSummary: En un pequeño pueblo inglés, la señora Bennet, una madre ansiosa por casar a sus cinco hijas, \nrecibe la noticia de que un hombre rico, el señor Bingley, ha llegado a la vecindad. \nLa familia Bennet asiste a un baile en la mansión Netherfield, donde la señorita Bennet, \nJane, y el señor Bingley parecen enamorarse. Sin embargo, la señorita Bennet más orgullosa y cautelosa, Elizabeth, se encuentra con el amigo del \nseñor Bingley, el señor Darcy, quien la encuentra poco atractiva y, a su vez, Elizabeth lo considera arrogante.  "
       metadataEditable.insert(tkinter.END, initialText)
       try:
-         with open('texto_guardado1.txt', 'r') as file:
+         with open('text/texto_guardado1.txt', 'r') as file:
             savedText = file.read()
             metadataEditable.delete("1.0", tkinter.END)
             metadataEditable.insert(tkinter.END, savedText)
@@ -137,7 +137,7 @@ class Library:
          pass
       
       def saveText():
-         with open('texto_guardado1.txt', 'w') as file:
+         with open('text/texto_guardado1.txt', 'w') as file:
             file.write(metadataEditable.get("1.0", tkinter.END))
             ventana_secundaria.destroy()
       ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
@@ -153,7 +153,7 @@ class Library:
     
         pdf_frame = tkinter.Frame(notebook)
         pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-        pdf = open('BasesDeDatos.pdf', 'rb')
+        pdf = open('books/BasesDeDatos.pdf', 'rb')
         reader = PyPDF2.PdfReader(pdf)
         text_widget = tkinter.Text(pdf_frame)
         text_widget.pack(fill=tkinter.BOTH, expand=True)
@@ -175,7 +175,7 @@ class Library:
         initialText = "Book metadata: \nTitle: Diseño Lógico de Bases de Datos \nAuthor: Xavier Burgués \nISBN Code: 9787538401320 \nGenre: Informatica \n\nSummary: En este libro, encontrarás todo tipo de información relacionada al diseño de bases de datos, como el diseño lógico, las trampas de diseño, la transformación del modelo conceptual en el modelo relacional, la normalización y sus prácticas."
         metadataEditable.insert(tkinter.END, initialText)
         try:
-           with open('texto_guardado2.txt', 'r') as file:
+           with open('text/texto_guardado2.txt', 'r') as file:
               savedText = file.read()
               metadataEditable.delete("1.0", tkinter.END)
               metadataEditable.insert(tkinter.END, savedText)
@@ -183,7 +183,7 @@ class Library:
            pass
       
         def saveText():
-           with open('texto_guardado2.txt', 'w') as file:
+           with open('text/texto_guardado2.txt', 'w') as file:
              file.write(metadataEditable.get("1.0", tkinter.END))
              ventana_secundaria.destroy()
         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
@@ -198,7 +198,7 @@ class Library:
     
         pdf_frame = tkinter.Frame(notebook)
         pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-        pdf = open('Confianza.pdf', 'rb')
+        pdf = open('books/Confianza.pdf', 'rb')
         reader = PyPDF2.PdfReader(pdf)
         text_widget = tkinter.Text(pdf_frame)
         text_widget.pack(fill=tkinter.BOTH, expand=True)
@@ -220,7 +220,7 @@ class Library:
         initialText = "Book metadata: \nTitle: Los 7 Pasos para Aumentar tu Confianza \nAuthor: Mónica Fernández \nISBN Code: 9789689465130 \nGenre: Psychology \n\nSummary: ¿Cómo puedes aprender a tener una confianza insuperable? Leyendo este libro. Aquí te enseñaremos a cómo tener esa confianza que tanto has anhelado en tu vida. Conócete, cree en la positividad, reinicia tu mente, suelta, busca esa mejor versión de ti mismo aquí."
         metadataEditable.insert(tkinter.END, initialText)
         try:
-           with open('texto_guardado3.txt', 'r') as file:
+           with open('text/texto_guardado3.txt', 'r') as file:
               savedText = file.read()
               metadataEditable.delete("1.0", tkinter.END)
               metadataEditable.insert(tkinter.END, savedText)
@@ -228,7 +228,7 @@ class Library:
            pass
       
         def saveText():
-           with open('texto_guardado3.txt', 'w') as file:
+           with open('text/texto_guardado3.txt', 'w') as file:
              file.write(metadataEditable.get("1.0", tkinter.END))
              ventana_secundaria.destroy()
         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
@@ -243,7 +243,7 @@ class Library:
     
         pdf_frame = tkinter.Frame(notebook)
         pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-        pdf = open('Frances.pdf', 'rb')
+        pdf = open('books/Frances.pdf', 'rb')
         reader = PyPDF2.PdfReader(pdf)
         text_widget = tkinter.Text(pdf_frame)
         text_widget.pack(fill=tkinter.BOTH, expand=True)
@@ -265,7 +265,7 @@ class Library:
         initialText = "Book metadata: \nTitle: Romeo et Juliette \nAuthor: William Shakespeare \nISBN Code: 9788458002627 \nGenre: Idiom \n\nSummary: En este libro para practicar tu francés, verás una famosa tragedia escrita por William Shakespeare que narra la historia de dos jóvenes amantes cuyo amor prohibido desencadena una serie de eventos trágicos. Ambientada en la ciudad italiana de Verona, la obra explora los temas universales del amor, el destino y el conflicto entre familias rivales. A través de su profunda pasión y sacrificio, Romeo y Julieta se convierten en símbolos eternos del amor verdadero y la inevitabilidad de la tragedia. "
         metadataEditable.insert(tkinter.END, initialText)
         try:
-           with open('texto_guardado4.txt', 'r') as file:
+           with open('text/texto_guardado4.txt', 'r') as file:
               savedText = file.read()
               metadataEditable.delete("1.0", tkinter.END)
               metadataEditable.insert(tkinter.END, savedText)
@@ -273,7 +273,7 @@ class Library:
            pass
         
         def saveText():
-           with open('texto_guardado4.txt', 'w') as file:
+           with open('text/texto_guardado4.txt', 'w') as file:
               file.write(metadataEditable.get("1.0", tkinter.END))
               ventana_secundaria.destroy()
         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
@@ -289,7 +289,7 @@ class Library:
     
         pdf_frame = tkinter.Frame(notebook)
         pdf_frame.pack(fill=tkinter.BOTH, expand=True)
-        pdf = open('SaludMental.pdf', 'rb')
+        pdf = open('books/SaludMental.pdf', 'rb')
         reader = PyPDF2.PdfReader(pdf)
         text_widget = tkinter.Text(pdf_frame)
         text_widget.pack(fill=tkinter.BOTH, expand=True)
@@ -310,7 +310,7 @@ class Library:
         initialText = "Book metadata: \nTitle: Una Mirada a la Salud Mental de los Adolescentes \nAuthor: Argyris Stringaris \nISBN Code: 9788458379521 \nGenre: Psychology \n\nSummary: En este libro hay conocimiento para fomentar valores y hábitos saludables. Encontrarás más de 1.000 consejos de salud clasificados en cinco grupos distintos de edad y temáticas variadas, desde la alimentación hasta información sobre enfermedades o sobre el comportamiento y el aprendizaje."
         metadataEditable.insert(tkinter.END, initialText)
         try:
-           with open('texto_guardado5.txt', 'r') as file:
+           with open('text/texto_guardado5.txt', 'r') as file:
               savedText = file.read()
               metadataEditable.delete("1.0", tkinter.END)
               metadataEditable.insert(tkinter.END, savedText)
@@ -318,7 +318,7 @@ class Library:
            pass
         
         def saveText():
-           with open('texto_guardado5.txt', 'w') as file:
+           with open('text/texto_guardado5.txt', 'w') as file:
               file.write(metadataEditable.get("1.0", tkinter.END))
               ventana_secundaria.destroy()
         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
@@ -405,4 +405,6 @@ class Library:
         ventana_secundaria.config(width=300, height=200)
         notebook = ttk.Notebook(ventana_secundaria)
         notebook.pack(fill=tkinter.BOTH, expand=True)
+
+
 aplicacion1 = Library()
