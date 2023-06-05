@@ -3,14 +3,27 @@ from tkinter import ttk
 from tkinter import *
 import PyPDF2
 from PIL import Image, ImageTk
+from tkinter import filedialog
+
+
+class Book:
+   def __init__(self, title, author, year, genre, description):
+      self.title = title
+      self.author = author
+      self.year = year
+      self.genre = genre
+      self.description = description
+
+
 
 class Library:
     def __init__(self):
        self.root = tkinter.Tk()
        self.root.title("Librería TEC Books")
        self.root.geometry('1100x1000')
-       self.root.iconbitmap(r'C:\Users\valer\Downloads\icon_library.ico')
        nb = ttk.Notebook(self.root)
+       self.root.iconbitmap(r'C:\Users\valer\Downloads\icon_library.ico')
+       self.books = []
        nb.pack(fill='both', expand='yes',)
        self.pl = tkinter.Frame(nb, background='#F4EEE1')
        self.p2 = tkinter.Frame(nb, background= '#E0D5CC')
@@ -310,6 +323,9 @@ class Library:
               ventana_secundaria.destroy()
         ventana_secundaria.protocol("WM_DELETE_WINDOW", saveText)
 
+
+
+
     def addBook(self):
          ventana_secundaria = tkinter.Toplevel()
          ventana_secundaria.title("Add a Book")
@@ -337,6 +353,42 @@ class Library:
          numPages.place(relx=0.5, rely=0.65, anchor="center")
          pagesEntry = ttk.Entry(ventana_secundaria, width=20)
          pagesEntry.place(relx=0.5, rely=0.7, anchor="center")
+
+         selected_book_label = ttk.Label(ventana_secundaria, text="Selected book: ")
+         selected_book_label.place(relx=0.5, rely=0.75, anchor="center")
+         
+         # change selected book label contents
+         selected_book_label.configure(text="Selected book: "+titleEntry.get())
+         
+         # Function for opening the
+         # file explorer window
+         filename = ""
+         def browseFiles():
+            global filename
+            filename = filedialog.askopenfilename(initialdir = "/",
+                                                   title = "Select a File",
+                                                   filetypes = (("PDF files",
+                                                               "*.pdf"),
+                                                               ("all files",
+                                                               "*.*")))
+
+         # BUTTON TO OPEN THE FILE EXPLORER
+         button_explore = Button(ventana_secundaria, text = "Browse Files", command = browseFiles)
+         button_explore.place(relx=0.5, rely=0.8, anchor="center")
+
+         print(filename)
+         # Change label contents
+         selected_book_label.configure(text="File Opened: " + filename)
+         
+
+         def saveBook():
+            title = titleEntry.get()
+            author = authorEntry.get()
+            genre = genreEntry.get()
+            summary = summaryEntry.get()
+            pages = pagesEntry.get()
+            book = Book(title, author, genre, summary, pages)
+            self.books.append(book)
 
     def deleteBook(self):
         ventana_secundaria = tkinter.Toplevel()
