@@ -1,0 +1,8 @@
+Book metadata: 
+Title: Diseño Lógico de Bases de Datos 
+Author: Xavier Burgués 
+ISBN Code: 9787538401320 
+Genre: Informatica 
+
+Summary: En este libro, encontrarás todo tipo de información relacionada al diseño de bases de datos, como el diseño lógico, las trampas de diseño, la transformación del modelo conceptual en el modelo relacional, la normalización y sus prácticas.
+
